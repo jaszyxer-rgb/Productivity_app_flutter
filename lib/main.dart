@@ -37,75 +37,6 @@ class _HomepageState extends State<Homepage> {
       ),
       body: Column(
         children: [
-          Container(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: TextField(
-                controller: dubba,
-                decoration: InputDecoration(
-                  label: Text("Enter today's quest"),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text("Urgency ="),
-                    SizedBox(width: 30),
-                    SizedBox(width: 100, child: TextField(controller: urg)),
-                    SizedBox(width: 40),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text("Importance ="),
-                    SizedBox(width: 15),
-                    SizedBox(width: 100, child: TextField(controller: imp)),
-                    SizedBox(width: 40),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 4,
-                  spreadRadius: 1,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: MaterialButton(
-              onPressed: () {
-                setState(() {
-                  sorted.add([
-                    dubba.text,
-                    int.parse(urg.text) + int.parse(imp.text),
-                  ]);
-                  sorted.sort((a, b) => b[1].compareTo(a[1]));
-                  dubba.clear();
-                });
-              },
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: BorderSide(width: 1),
-              ),
-              child: Text("Assign this quest"),
-            ),
-          ),
-
           Flexible(
             child: ListView.builder(
               itemCount: sorted.length,
@@ -132,6 +63,102 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextField(
+                          controller: dubba,
+                          decoration: InputDecoration(
+                            label: Text("Enter today's quest"),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text("Urgency ="),
+                                SizedBox(width: 30),
+                                SizedBox(
+                                  width: 100,
+                                  child: TextField(controller: urg),
+                                ),
+                                SizedBox(width: 40),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text("Importance ="),
+                                SizedBox(width: 15),
+                                SizedBox(
+                                  width: 100,
+                                  child: TextField(controller: imp),
+                                ),
+                                SizedBox(width: 40),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 4,
+                              spreadRadius: 1,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: MaterialButton(
+                          onPressed: () {
+                            setState(() {
+                              sorted.add([
+                                dubba.text,
+                                int.parse(urg.text) + int.parse(imp.text),
+                              ]);
+                              sorted.sort((a, b) => b[1].compareTo(a[1]));
+                              urg.clear();
+                              imp.clear();
+                              dubba.clear();
+                            });
+                            Navigator.pop(context);
+                          },
+
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(width: 1),
+                          ),
+                          child: Text("Assign this quest"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
